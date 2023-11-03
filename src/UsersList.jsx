@@ -1,5 +1,5 @@
 import './UsersList.css'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 
 const UsersList = () => {
@@ -19,7 +19,12 @@ const UsersList = () => {
         setFormData((prevDataForm) => {
             return { ...prevDataForm, [name]: target.value };
         });
+
     };
+
+     useEffect(()=> {
+            setFilteredUsers(users)
+        }, [users]);
 
     const filtering = (action) => {
         // console.log(action);
@@ -32,7 +37,7 @@ const UsersList = () => {
             })
         }
 
-        else if (action.target.name === 'showUsers') {
+         if (action.target.name === 'showUsers') {
             newFilteredList = users.filter((user) => {
                 return user.usertype === 'User'
             })
@@ -45,6 +50,8 @@ const UsersList = () => {
         setFilteredUsers(newFilteredList);
 
     }
+
+
 
     const setUser = (e) => {
         e.preventDefault();
@@ -100,7 +107,7 @@ const UsersList = () => {
 
             <div className="list">
 
-                {users.map((user) => {
+                {filteredUsers.map((user) => {
                     return (
                         <div className="userItem" key={user.id} onClick={() => removeUser(user.id)}>
                             <p>{user.username}</p>
@@ -109,11 +116,13 @@ const UsersList = () => {
                         </div>
                     );
                 })}
+
             </div>
 
         </div>
     )
 }
+
 
 
 export default UsersList;
